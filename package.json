@@ -1,0 +1,19 @@
+{
+  "name": "my-github-pages",
+  "version": "1.0.0",
+  "description": "GitHub Pages TypeScript website",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "gh-pages": "^6.0.0"
+  }
+}
