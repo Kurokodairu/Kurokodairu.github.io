@@ -2,8 +2,13 @@
   "port": 3000,
   "files": ["./docs/**/*.{html,htm,css,js}"],
   "server": {
-    "baseDir": "./docs"
+    "baseDir": "./docs",
+    "routes": {
+      "/css": "./docs/css",
+      "/js": "./docs/js"
+    }
   },
   "watch": true,
-  "reloadDelay": 1000
+  "reloadDelay": 1000,
+  "open": true
 }
