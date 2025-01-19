@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "scripts": {
     "start": "concurrently \"npm run build:watch\" \"npm run serve\" \"npm run css:watch\"",
-    "serve": "lite-server --baseDir=docs",
-    "build": "npm run build:ts && npm run build:css",
+    "serve": "lite-server -c bs-config.js --baseDir=docs",
+    "build": "npm run build:ts && npm run build:css && echo kurokodairu.com > docs/CNAME",
     "build:ts": "tsc",
-    "build:css": "tailwindcss -i ./src/styles/main.css -o ./docs/css/main.css",
+    "build:css": "tailwindcss -i ./src/styles/main.css -o ./docs/css/main.css --minify",
     "build:watch": "tsc --watch",
     "css:watch": "tailwindcss -i ./src/styles/main.css -o ./docs/css/main.css --watch",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d docs"
+    "predeploy": "npm run build && node -e \"console.log('Contents of docs folder:', require('fs').readdirSync('docs'))\"",
+    "deploy": "gh-pages -d docs --dotfiles"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

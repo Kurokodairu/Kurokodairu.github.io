@@ -22,12 +22,18 @@ class App {
     }
     createHeroSection() {
         return `
-            <div class="py-24 bg-[#f8f5ff] flex flex-col items-center justify-center text-center px-4">
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                    Welcome to My Portfolio
+            <div class="pt-24 flex flex-col items-center justify-center text-center px-4">
+
+                <h1 class="text-6xl font-bold text-gray-900  
+                bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500
+                animate-gradient
+                bg-[size:200%_auto]
+                bg-clip-text text-transparent 
+                leading-relaxed overflow-visible">
+                    { Projects }
                 </h1>
                 <p class="text-xl md:text-2xl text-[#7c619c] max-w-2xl mb-12">
-                    joe mamamamamamamamamam
+                    Kurokodairu - Data Science
                 </p>
                 <a href="https://github.com/Kurokodairu" 
                    class="inline-flex items-center gap-2 bg-[#9d7cd1] hover:bg-[#8b6bc4] text-white px-8 py-3 rounded-full font-medium transition duration-300">
@@ -41,7 +47,7 @@ class App {
     }
     createProjectCard(project) {
         return `
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition duration-300">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-purple-800 mb-3">
                         ${project.title}
@@ -72,7 +78,7 @@ class App {
     }
     createProjectsSection() {
         return `
-            <div class="bg-purple-50 py-16">
+            <div class="py-16">
                 <div class="container mx-auto px-4">
                     <h2 class="text-3xl font-bold text-purple-800 mb-12 text-center">
                         Featured Projects
@@ -87,7 +93,7 @@ class App {
     init() {
         if (this.container) {
             this.container.innerHTML = `
-                <main class="min-h-screen">
+                <main class="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-purple-100">
                     ${this.createHeroSection()}
                     ${this.createProjectsSection()}
                 </main>
