@@ -1,27 +1,26 @@
-"use strict";
+const html = String.raw;
+import { createFooter } from './components/footer.js';
 class App {
     constructor() {
         this.container = document.getElementById('app');
-        // Sample projects - replace with your actual projects
         this.projects = [
             {
                 title: "Data Analysis Project",
                 description: "Analysis of customer behavior using Python and Pandas",
                 tools: ["Python", "Pandas", "Matplotlib"],
-                link: "https://github.com/yourusername/project1"
+                link: "https://github.com/Kurokodairu/"
             },
             {
                 title: "Machine Learning Model",
                 description: "Predictive model for stock market trends",
                 tools: ["scikit-learn", "TensorFlow", "Jupyter"],
-                link: "https://github.com/yourusername/project2"
-            },
-            // Add more projects as needed
+                link: "https://github.com/Kurokodairu/"
+            }
         ];
         this.init();
     }
     createHeroSection() {
-        return `
+        return html `
             <div class="pt-24 flex flex-col items-center justify-center text-center px-4">
 
                 <h1 class="text-6xl font-bold text-gray-900  
@@ -46,7 +45,7 @@ class App {
         `;
     }
     createProjectCard(project) {
-        return `
+        return html `
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition duration-300">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-purple-800 mb-3">
@@ -77,7 +76,7 @@ class App {
         `;
     }
     createProjectsSection() {
-        return `
+        return html `
             <div class="py-16">
                 <div class="container mx-auto px-4">
                     <h2 class="text-3xl font-bold text-purple-800 mb-12 text-center">
@@ -93,10 +92,13 @@ class App {
     init() {
         if (this.container) {
             this.container.innerHTML = `
-                <main class="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-purple-100">
+                <div class="flex flex-col min-h-[105vh] bg-gradient-to-br from-blue-100 via-purple-50 to-purple-100">
+                <main class="min-h-[100vh]">
                     ${this.createHeroSection()}
                     ${this.createProjectsSection()}
                 </main>
+                ${createFooter()}
+            </div>
             `;
         }
     }
