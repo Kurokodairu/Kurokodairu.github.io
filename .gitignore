@@ -1,7 +1,5 @@
 node_modules/
 
-# Ignore compiled, Can be found in other branch
-docs/*
 
 # Environment files
 .env
