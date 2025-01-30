@@ -2,36 +2,67 @@ const html = String.raw;
 import { createFooter } from "../components/footer.js";
 class second {
     constructor() {
+        var _a;
         this.container = document.getElementById('second');
-        this.socket = new WebSocket('wss://localhost:5000');
+        this.socket = null;
+        this.address = '';
         this.init();
+        (_a = document.getElementById('connect')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+            const addressInput = document.getElementById('addressWS');
+            this.address = addressInput.value;
+            this.connectWebSocket();
+        });
     }
     createMain() {
         return html `
-            <p id="status">Second Page</p>
-            <button id="sendCommand" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400" disabled>Send Command</button>
-            <p id="messageDisplay"></p>
-            <div class="flex flex-col items-center justify-center w-1/2 mx-auto">
-                <img id="receivedImage" class="max-w-md mx-auto object-contain" />
+            <div class="flex flex-col items-left w-1/4">
+                <p>Enter WebSocket address to connect</p>
+                <label for="addressWS">WebSocket address:</label>
+                <input type="text" id="addressWS" class="border border-gray-300 rounded p-2" />
+                <button id="connect" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Connect</button>
+
+                <button id="sendCommand" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400" disabled>Send Command</button>
+                <p id="messageDisplay"></p>
             </div>
-       `;
+            <div class="flex flex-col items-center justify-center w-1/2 mx-auto">
+                <img id="receivedImage" class="w-1/6 mx-auto object-contain mt-32" />
+            </div>
+        `;
+    }
+    connectWebSocket() {
+        if (this.socket) {
+            this.socket.close();
+        }
+        try {
+            this.socket = new WebSocket(this.address);
+            this.setupWebSocket();
+            this.setupEventListeners();
+        }
+        catch (error) {
+            console.error('Failed to connect to WebSocket:', error);
+            const statusElement = document.getElementById('messageDisplay');
+            if (statusElement)
+                statusElement.textContent = "Failed to connect to WebSocket";
+        }
     }
     setupWebSocket() {
-        const statusElement = document.getElementById('status');
+        if (!this.socket)
+            return;
+        const statusElement = document.getElementById('messageDisplay');
         this.socket.onopen = () => {
             if (statusElement)
-                statusElement.textContent = "Connected to local server";
+                statusElement.textContent = "Connected to WebSocket server";
             const sendButton = document.getElementById('sendCommand');
             if (sendButton)
                 sendButton.disabled = false;
         };
         this.socket.onerror = () => {
             if (statusElement)
-                statusElement.textContent = "Local server not found";
+                statusElement.textContent = "WebSocket connection error";
         };
         this.socket.onclose = () => {
             if (statusElement)
-                statusElement.textContent = "Disconnected from server";
+                statusElement.textContent = "Disconnected from WebSocket server";
             const sendButton = document.getElementById('sendCommand');
             if (sendButton)
                 sendButton.disabled = true;
@@ -71,14 +102,11 @@ class second {
         const sendButton = document.getElementById('sendCommand');
         if (sendButton) {
             sendButton.addEventListener('click', () => {
-                if (this.socket.readyState === WebSocket.OPEN) {
+                if (this.socket && this.socket.readyState === WebSocket.OPEN) {
                     this.socket.send('EXECUTE_COMMAND');
-                    const statusElement = document.getElementById('status');
-                    if (statusElement)
-                        statusElement.textContent = 'Command sent';
                 }
                 else {
-                    const statusElement = document.getElementById('status');
+                    const statusElement = document.getElementById('messageDisplay');
                     if (statusElement)
                         statusElement.textContent = 'Not connected to server';
                 }
@@ -95,8 +123,6 @@ class second {
                 ${createFooter()}
             </div>
             `;
-            this.setupWebSocket();
-            this.setupEventListeners();
         }
     }
 }
