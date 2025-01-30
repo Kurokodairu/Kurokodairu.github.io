@@ -3,7 +3,7 @@ import { createFooter } from "../components/footer.js";
 class second {
     constructor() {
         this.container = document.getElementById('second');
-        this.socket = new WebSocket('ws://localhost:5000');
+        this.socket = new WebSocket('wss://localhost:5000');
         this.init();
     }
     createMain() {
