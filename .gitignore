@@ -1,7 +1,7 @@
 node_modules/
 
-# Only ignore source maps, keep the compiled JS
-docs/js/*.js.map
+# Ignore compiled, Can be found in other branch
+docs/*
 
 # Environment files
 .env

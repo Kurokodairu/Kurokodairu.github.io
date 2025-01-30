@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "server.js",
+    "docs"
+  ],
+  "ext": "js,json,html,css,htm"
+}

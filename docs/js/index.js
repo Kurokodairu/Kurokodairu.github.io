@@ -15,6 +15,11 @@ class App {
                 description: "Predictive model for stock market trends",
                 tools: ["scikit-learn", "TensorFlow", "Jupyter"],
                 link: "https://github.com/Kurokodairu/"
+            },
+            {
+                title: "Machine Learning Model",
+                description: "Predictive model for stock market trends",
+                tools: ["scikit-learn", "TensorFlow", "Jupyter"]
             }
         ];
         this.init();
