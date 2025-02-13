@@ -1,5 +1,6 @@
 const html = String.raw;
 import { createFooter } from './components/footer.js';
+import { initFireworks } from './fireworks.js';
 // Create interfaces for our data
 interface Project {
     title: string;
@@ -114,11 +115,12 @@ class App {
     private init(): void {
         if (this.container) {
             this.container.innerHTML = `
-                <div class="flex flex-col min-h-[105vh] bg-gradient-to-br from-blue-100 via-purple-50 to-purple-100">
+                <div class="flex flex-col min-h-[105vh] bg-gradient-to-br from-blue-200 via-purple-100 to-purple-200">
                 <main class="min-h-[100vh]">
                     ${this.createHeroSection()}
                     ${this.createProjectsSection()}
                 </main>
+                <canvas id="fireworksCanvas"></canvas>
                 ${createFooter()}
             </div>
             `;
@@ -128,4 +130,7 @@ class App {
 
 document.addEventListener('DOMContentLoaded', () => {
     new App();
+    initFireworks();
 });
+
+  
