@@ -9,7 +9,7 @@ export function createFooter() {
                 <div>
                     <ul class="space-y-2">
                         <li><a href="/" class="hover:text-gray-300">Home</a></li>
-                        <li><a href="/second" class="hover:text-gray-300">Second Page</a></li>
+                        <li><a href="/shop" class="hover:text-gray-300">Shop</a></li>
                     </ul>
                 </div>
                 
