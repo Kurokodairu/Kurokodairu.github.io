@@ -6,20 +6,20 @@ class App {
         this.container = document.getElementById('app');
         this.projects = [
             {
-                title: "Data Analysis Project",
-                description: "Analysis of customer behavior using Python and Pandas",
+                title: "Data Science Project",
+                description: "Lorem ipsum dolor sit amet",
                 tools: ["Python", "Pandas", "Matplotlib"],
                 link: "https://github.com/Kurokodairu/"
             },
             {
                 title: "Machine Learning Model",
-                description: "Predictive model for stock market trends",
+                description: "Lorem ipsum dolor sit amet",
                 tools: ["scikit-learn", "TensorFlow", "Jupyter"],
                 link: "https://github.com/Kurokodairu/"
             },
             {
                 title: "Machine Learning Model",
-                description: "Predictive model for stock market trends",
+                description: "Lorem ipsum dolor sit amet",
                 tools: ["scikit-learn", "TensorFlow", "Jupyter"]
             }
         ];
