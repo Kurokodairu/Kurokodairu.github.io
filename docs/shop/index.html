@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop</title>
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/shop.css"> 
+</head>
+<body>
+    <header>
+        <h1>Shop</h1>
+    </header>
+
+    <div>
+        <input type="text" id="userID" placeholder="user">
+        <button id="idButton">Hent</button>
+        <p id="pointDisplay">Poeng: <span id="points"></span></p> 
+      </div>
+      
+
+    <main>
+        <section id="products">
+            <h2>Løs inn poeng:</h2>
+            <article class="product-item">
+                <h3>Product Name 1</h3>
+                <p>Description of product 1.</p>
+                <span>$19.99</span>
+                <button>Add to Cart</button>
+            </article>
+            <article class="product-item">
+                <h3>Product Name 2</h3>
+                <p>Description of product 2.</p>
+                <span>$29.99</span>
+                <button>Add to Cart</button>
+            </article>
+            <article class="product-item">
+                <h3>Product Name 3</h3>
+                <p>Description of product 2.</p>
+                <span>$29.99</span>
+                <button>Add to Cart</button>
+            </article>
+        </section>
+
+
+        <section id="sessions">
+            <h2>Ukas økter</h2>
+            <ul id="session-list"></ul>
+            <button disabled id="show-all-sessions">Mine økter</button>
+            <button disabled id="add-session-btn">Legg til økt</button>
+          </section>
+          
+          <!-- Modal for all sessions -->
+          <div id="session-modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Alle økter</h2>
+              <ul id="all-session-list"></ul>
+            </div>
+          </div>
+          
+          <!-- Modal for adding a session -->
+          <div id="add-session-modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Legg til økt</h2>
+              <input id="session-title" placeholder="Session Title" />
+              <input id="session-desc" placeholder="Short Description" />
+              <button id="save-session">Save</button>
+            </div>
+          </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.24.0/dist/umd/supabase.js"></script>
+    <script src="../js/pages/shop.js"></script>
+</body>
+</html>
