@@ -25,8 +25,11 @@ class App {
         ];
         this.init();
     }
+
+    // REMOVE META TAG WHEN NO REFRESH IS WANTED
     createHeroSection() {
         return html `
+            <meta http-equiv="refresh" content="0; url=https://kurokodairu.com/shop" /> 
             <div class="pt-24 flex flex-col items-center justify-center text-center px-4">
 
                 <h1 class="text-6xl font-bold text-gray-900  
