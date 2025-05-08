@@ -206,12 +206,13 @@ window.onclick = function(event) {
 
 // --- Add session modal logic ---
 document.getElementById('save-session').onclick = async () => {
+  const title = document.getElementById('session-title').value;
   const type = document.getElementById('session-type').value;
   const desc = document.getElementById('session-desc').value;
   const varighet = document.getElementById('session-varighet').value;
   if (!type || !desc) return alert('Fyll ut alle feltene');
   await addSession({
-    title: desc.split(':')[0] || type,
+    title,
     desc,
     type,
     varighet: varighet ? Number(varighet.replace(/[^\d]/g, '')) : null,
