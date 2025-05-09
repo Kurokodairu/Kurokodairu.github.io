@@ -63,6 +63,16 @@ async function handleUserLogin() {
   const val = userIdInput.value.trim();
   userId = val;
   setSessionButtonsState(!!val);
+  if (userId) {
+    switch (userId) {
+      case 'j':
+        showNotification('Jørgen', 'success');
+        break;
+      case 't':
+        showNotification('Trine', 'success');
+        break;
+    }
+  }
   await updatePointDisplay(userId);
 }
 
