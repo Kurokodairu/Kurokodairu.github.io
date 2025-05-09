@@ -20,9 +20,9 @@
       <div class="user-section">
         <input type="text" id="userID" placeholder="Bruker" class="user-input">
         <button id="idButton" class="user-btn">Hent</button>
-        <div class="points-adjust">
+        <!--<div class="points-adjust">
           <button class="icon-btn">+<i class="lucide lucide-plus"></i></button>
-          <button class="icon-btn">-<i class="lucide lucide-minus"></i></button>
+          <button class="icon-btn">-<i class="lucide lucide-minus"></i></button>-->
         </div>
       </div>
     </div>
@@ -84,6 +84,13 @@
       </div>
       <ul id="session-list" class="session-list">
       </ul>
+
+      <div class="session-delete-row">
+        <button id="open-delete-session-modal" class="delete-session-trigger">
+          Slett økt
+        </button>
+      </div>
+
     </section>
   </main>
 
@@ -135,6 +142,24 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal for deleting a session by ID -->
+<div id="delete-session-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Slett økt</h2>
+      <span class="close" data-modal="delete-session-modal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <label for="delete-session-id">Session ID</label>
+      <input id="delete-session-id" class="modal-input" type="number" min="1" placeholder="F.eks. 123" />
+    </div>
+    <div class="modal-footer">
+      <button class="close" data-modal="delete-session-modal">Avbryt</button>
+      <button id="delete-session-confirm" class="modal-save">Slett</button>
+    </div>
+  </div>
+</div>
 
 
   <script src="../js/pages/shop.js"></script>

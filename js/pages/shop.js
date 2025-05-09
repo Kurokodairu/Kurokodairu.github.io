@@ -10,12 +10,14 @@ let userId = null;
 const userIdInput = document.getElementById('userID');
 const addSessionBtn = document.getElementById('add-session-btn');
 const showAllSessionsBtn = document.getElementById('show-all-sessions');
+const delSessionBtn = document.getElementById('open-delete-session-modal');
 const pointsDisplay = document.getElementById('points');
 const sessionList = document.getElementById('session-list');
 const allSessionList = document.getElementById('all-session-list');
 
 addSessionBtn.classList.add('is-disabled');
 showAllSessionsBtn.classList.add('is-disabled');
+delSessionBtn.classList.add('is-disabled');
 
 // --- UI helpers ---
 function getTypeBadge(type) {
@@ -53,6 +55,7 @@ function getDotClass(type) {
 function setSessionButtonsState(enabled) {
   addSessionBtn.classList.toggle('is-disabled', !enabled);
   showAllSessionsBtn.classList.toggle('is-disabled', !enabled);
+  delSessionBtn.classList.toggle('is-disabled', !enabled);
 }
 
 // --- User login ---
@@ -88,13 +91,24 @@ async function getPoints(userId) {
 }
 async function updatePoints(userId, change) {
   const newScore = (await getPoints(userId) || 0) + change;
-  const { error } = await supabase
+  if (change > 0) {
+    const { error } = await supabase
     .from('users')
     .update({ points: newScore })
     .eq('name', userId);
-  if (!error) {
-    await updatePointDisplay(userId);
-    showNotification(`+${change} poeng`, 'success');
+    if (!error) {
+      await updatePointDisplay(userId);
+      showNotification(`+${change} poeng`, 'success');
+    }
+  } else if (change < 0) {
+    const { error } = await supabase
+      .from('users')
+      .update({ points: newScore })
+      .eq('name', userId);
+    if (!error) {
+      await updatePointDisplay(userId);
+      showNotification(`${change} poeng`, 'warning');
+    }
   }
 }
 
@@ -143,6 +157,7 @@ function renderSessionList(listElem, sessions) {
           <span class="session-dot ${dotClass}"></span>
           <span class="session-date">${date}</span>
           ${durationHtml}
+          <div class="session-id">${session.id}</div>
         </div>
         <div class="session-desc">
           [${session.user_id == "j" ? "Jørgen" : session.user_id == "t" ? "Trine" : session.user_id}] ${session.title}${session.desc ? ': ' + session.desc : ''}
@@ -179,14 +194,14 @@ function hideModal(id) {
 }
 addSessionBtn.onclick = () => {
   if (addSessionBtn.classList.contains('is-disabled')) {
-    showNotification("Du må logge inn for å bruke denne funksjonen", "error");
+    showNotification("Logg inn først", "error");
     return;
   }
   showModal('add-session-modal');
 }
 showAllSessionsBtn.onclick = async () => {
   if (addSessionBtn.classList.contains('is-disabled')) {
-    showNotification("Du må logge inn for å bruke denne funksjonen", "error");
+    showNotification("Logg inn først", "error");
     return;
   }
   await fetchAllSessions();
@@ -219,6 +234,52 @@ document.getElementById('save-session').onclick = async () => {
   });
   hideModal('add-session-modal');
 };
+
+// delete session modal
+// Open the delete session modal
+document.getElementById('open-delete-session-modal').onclick = () => {
+  if (delSessionBtn.classList.contains('is-disabled')) {
+    showNotification("Logg inn først", "error");
+    return;
+  }
+  document.getElementById('delete-session-modal').classList.add('visible');
+};
+// Confirm delete
+document.getElementById('delete-session-confirm').onclick = async () => {
+  const id = document.getElementById('delete-session-id').value;
+  if (!id) {
+    showNotification('Skriv inn en økt-ID', 'warning');
+    return;
+  }
+  if (!userId) {
+    showNotification('Du må logge inn først', 'error');
+    return;
+  }
+  // Confirm with user
+  if (!confirm(`Er du sikker på at du vil slette økt med ID ${id}?`)) return;
+
+  // Delete from Supabase
+  const { data, error } = await supabaseClient
+    .from('sessions')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', userId)
+    .select();
+    if (error) {
+      showNotification('Kunne ikke slette økten', 'error');
+    return;
+  } if (data.length === 0) {
+    showNotification('Ingen økt med denne ID-en, eller ikke din økt.', 'warning');
+  } else {
+      console.log(data);
+      showNotification('Økt slettet');
+      updatePoints(userId, -1);
+      document.getElementById('delete-session-modal').classList.remove('visible');
+      await fetchRecentSessions();
+      await fetchAllSessions();
+  }
+};
+
 
 
 // Notification logic

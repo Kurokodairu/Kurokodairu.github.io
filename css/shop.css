@@ -388,6 +388,26 @@ button.is-disabled {
   color: #de1c2f;
 }
 
+.session-meta {
+  position: relative; /* Needed for absolute positioning */
+}
+
+.session-id {
+  position: absolute;
+  bottom: 1.4em;
+  right: -1em;
+  color: #efefef;              /* Slightly darker grey for text */
+  font-size: 0.75em;
+  font-weight: 700;
+  min-width: 1.6em;
+  height: 1.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+
 /* Modal styling */
 .modal {
   display: none;
@@ -478,6 +498,30 @@ button.is-disabled {
 .modal-save:hover {
   background: #5b21b6;
 }
+
+.session-delete-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+}
+
+.delete-session-trigger {
+  background: #fff;
+  color: #f76f6f;
+  border: 1.5px solid #f76f6f;
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+  margin-right:1rem;
+  font-size: 0.77rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.delete-session-trigger:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
 
 /* Responsive */
 @media (max-width: 900px) {
