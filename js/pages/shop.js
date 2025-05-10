@@ -63,7 +63,7 @@ async function checkAuth() {
   if (user) {
     // Check if user exists in users table, create if not
     await ensureUserExists(user);
-    showNotification(`Logget inn som ${user.email}`, 'success');
+    userDisplayElement.textContent = `Innlogget som: ${user.user_metadata.first_name || user.email}`;
     await updatePointDisplay();
     await fetchRecentSessions();
   } else {
