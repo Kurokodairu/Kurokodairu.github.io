@@ -10,7 +10,7 @@ const delSessionBtn = document.getElementById('open-delete-session-modal');
 const pointsDisplay = document.getElementById('points');
 const sessionList = document.getElementById('session-list');
 const allSessionList = document.getElementById('all-session-list');
-const googleLoginBtn = document.getElementById('google-login-btn'); // Your Google sign-in button
+const googleLoginBtn = document.getElementById('g-id-signin'); // Your Google sign-in button
 
 // --- UI helpers ---
 function setSessionButtonsState(enabled) {
@@ -36,7 +36,7 @@ async function checkAuth() {
 }
 
 googleLoginBtn.onclick = async () => {
-  await supabase.auth.signInWithOAuth({ provider: 'google' });
+  await supabase.auth.signInWithOAuth({ state: state, provider: 'google' });
 };
 
 supabase.auth.onAuthStateChange((_event, session) => {
