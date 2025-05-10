@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Shop</title>
   <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
-  <script src="https://accounts.google.com/gsi/client" async></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.24.0/dist/umd/supabase.js"></script>
   <link rel="stylesheet" href="../css/shop.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.260.0/font/lucide.css">
@@ -22,24 +21,8 @@
         <input type="text" id="userID" placeholder="Bruker" class="user-input">
         <button id="idButton" class="user-btn">Hent</button>
 
+        <button id="google-login-btn" class="user-btn">Logg inn</button>
 
-          <div id="g_id_onload"
-          data-client_id="545669983151-vpdog5rjimg8ldpein7a0akqtsah5esu.apps.googleusercontent.com"
-          data-context="signin"
-          data-ux_mode="popup"
-          data-login_uri="https://pmsgkdkyvowdqirnlquc.supabase.co/auth/v1/callback"
-          data-itp_support="true">
-        </div>
-    
-        <div id="g_id_signin" class="g_id_signin"
-          data-type="standard"
-          data-shape="rectangular"
-          data-theme="outline"
-          data-text="signin_with"
-          data-size="medium"
-          data-logo_alignment="left">
-        </div>
-        
         <!--<div class="points-adjust">
           <button class="icon-btn">+<i class="lucide lucide-plus"></i></button>
           <button class="icon-btn">-<i class="lucide lucide-minus"></i></button>-->
