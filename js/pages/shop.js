@@ -1,142 +1,111 @@
-// shop.js
-const supabaseUrl = 'https://pmsgkdkyvowdqirnlquc.supabase.co'; 
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtc2drZGt5dm93ZHFpcm5scXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzE3ODYsImV4cCI6MjA2MjIwNzc4Nn0.mpi2eMEOwfWBuA_7VeIp41N3pdedSrp5XacJ5CMIpDo';
-const supabase = supabaseClient = window.supabase?.createClient
-  ? window.supabase.createClient(supabaseUrl, supabaseAnonKey)
-  : window.supabaseClient;
+const supabaseUrl = 'https://pmsgkdkyvowdqirnlquc.supabase.co';
+const supabaseAnonKey = 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtc2drZGt5dm93ZHFpcm5scXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzE3ODYsImV4cCI6MjA2MjIwNzc4Nn0';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
 // DOM elements
-let userId = null;
-const userIdInput = document.getElementById('userID');
+let currentUser = null;
 const addSessionBtn = document.getElementById('add-session-btn');
 const showAllSessionsBtn = document.getElementById('show-all-sessions');
 const delSessionBtn = document.getElementById('open-delete-session-modal');
 const pointsDisplay = document.getElementById('points');
 const sessionList = document.getElementById('session-list');
 const allSessionList = document.getElementById('all-session-list');
-
-addSessionBtn.classList.add('is-disabled');
-showAllSessionsBtn.classList.add('is-disabled');
-delSessionBtn.classList.add('is-disabled');
+const googleLoginBtn = document.getElementById('g_id_signin'); // Your Google sign-in button
 
 // --- UI helpers ---
-function getTypeBadge(type) {
-  if (!type) return '';
-  let badgeClass = '';
-  let label = '';
-  switch (type.toLowerCase()) {
-    case 'pilates':
-      badgeClass = 'pilates';
-      label = 'Pilates';
-      break;
-    case 'vann':
-      badgeClass = 'vann';
-      label = 'Vann';
-      break;
-    case 'styrke':
-      badgeClass = 'styrke';
-      label = 'Styrke';
-      break;
-    default:
-      badgeClass = 'annet';
-      label = 'Annet';
-  }
-  return `<span class="session-badge ${badgeClass}">${label}</span>`;
-}
-function getDotClass(type) {
-  if (!type) return '';
-  switch (type.toLowerCase()) {
-    case 'pilates': return 'pilates';
-    case 'vann': return 'vann';
-    case 'styrke': return 'styrke';
-    default: return 'annet';
-  }
-}
 function setSessionButtonsState(enabled) {
   addSessionBtn.classList.toggle('is-disabled', !enabled);
   showAllSessionsBtn.classList.toggle('is-disabled', !enabled);
   delSessionBtn.classList.toggle('is-disabled', !enabled);
 }
 
-// --- User login ---
-async function handleUserLogin() {
-  const val = userIdInput.value.trim();
-  userId = val;
-  setSessionButtonsState(!!val);
-  await updatePointDisplay(userId);
+// --- Auth logic ---
+async function checkAuth() {
+  const { data: { user } } = await supabase.auth.getUser();
+  currentUser = user;
+  setSessionButtonsState(!!user);
+  if (user) {
+    showNotification(`Logget inn som ${user.email}`, 'success');
+    await updatePointDisplay();
+    await fetchRecentSessions();
+  } else {
+    pointsDisplay.textContent = '0';
+    sessionList.innerHTML = '';
+    allSessionList.innerHTML = '';
+  }
 }
 
-// --- Event listeners for login ---
-userIdInput?.addEventListener('keyup', async (event) => {
-  if (event.key === 'Enter') await handleUserLogin();
+googleLoginBtn.onclick = async () => {
+  await supabase.auth.signInWithOAuth({ provider: 'google' });
+};
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  checkAuth();
 });
-document.getElementById('idButton')?.addEventListener('click', handleUserLogin);
 
 // --- Points ---
-async function updatePointDisplay(userId) {
-  if (!userId) {
+async function updatePointDisplay() {
+  if (!currentUser) {
     pointsDisplay.textContent = '0';
     return;
   }
-  pointsDisplay.textContent = await getPoints(userId);
+  pointsDisplay.textContent = await getPoints();
 }
-async function getPoints(userId) {
+
+async function getPoints() {
   const { data, error } = await supabase
     .from('users')
     .select('points')
-    .eq('name', userId)
+    .eq('id', currentUser.id)
     .single();
   if (error || !data) return 0;
   return Number(data.points);
 }
-async function updatePoints(userId, change) {
-  const newScore = (await getPoints(userId) || 0) + change;
-  if (change > 0) {
-    const { error } = await supabase
+
+async function updatePoints(change) {
+  const newScore = (await getPoints() || 0) + change;
+  const { error } = await supabase
     .from('users')
     .update({ points: newScore })
-    .eq('name', userId);
-    if (!error) {
-      await updatePointDisplay(userId);
-      showNotification(`+${change} poeng`, 'success');
-    }
-  } else if (change < 0) {
-    const { error } = await supabase
-      .from('users')
-      .update({ points: newScore })
-      .eq('name', userId);
-    if (!error) {
-      await updatePointDisplay(userId);
-      showNotification(`${change} poeng`, 'warning');
-    }
+    .eq('id', currentUser.id);
+  if (!error) {
+    await updatePointDisplay();
+    showNotification(`${change > 0 ? '+' : ''}${change} poeng`, change > 0 ? 'success' : 'warning');
   }
 }
 
 // --- Sessions: Fetch and render ---
 async function fetchRecentSessions() {
+  if (!currentUser) {
+    sessionList.innerHTML = '';
+    return;
+  }
   const lastWeek = new Date();
   lastWeek.setDate(lastWeek.getDate() - 7);
   const { data, error } = await supabase
     .from('sessions')
     .select('*')
+    .eq('user_id', currentUser.id)
     .gte('created_at', lastWeek.toISOString())
     .order('created_at', { ascending: false });
   if (error) return;
   renderSessionList(sessionList, data);
 }
+
 async function fetchAllSessions() {
-  if (!userId) {
+  if (!currentUser) {
     allSessionList.innerHTML = '';
     return;
   }
   const { data, error } = await supabase
     .from('sessions')
     .select('*')
-    .eq('user_id', userId)
+    .eq('user_id', currentUser.id)
     .order('created_at', { ascending: false });
   if (error) return;
   renderSessionList(allSessionList, data);
 }
+
 function renderSessionList(listElem, sessions) {
   listElem.innerHTML = '';
   if (!sessions || !sessions.length) {
@@ -149,10 +118,9 @@ function renderSessionList(listElem, sessions) {
     const type = session.type || '';
     const dotClass = getDotClass(type);
     const badge = getTypeBadge(type);
-    const durationOrL = varighet || (session.varighet === 0 ? '0 min' : '');
-    const durationHtml = durationOrL ? `<span class="session-divider">•</span><span class="session-duration">${durationOrL}</span>` : '';
+    const durationHtml = varighet ? `<span class="session-divider">•</span><span class="session-duration">${varighet}</span>` : '';
     listElem.innerHTML += `
-      <li>
+      <li class="session-item">
         <div class="session-meta">
           <span class="session-dot ${dotClass}"></span>
           <span class="session-date">${date}</span>
@@ -160,7 +128,7 @@ function renderSessionList(listElem, sessions) {
           <div class="session-id">${session.id}</div>
         </div>
         <div class="session-desc">
-          [${session.user_id == "j" ? "Jørgen" : session.user_id == "t" ? "Trine" : session.user_id}] ${session.title}${session.desc ? ': ' + session.desc : ''}
+          ${session.title}${session.desc ? ': ' + session.desc : ''}
           ${badge}
         </div>
       </li>
@@ -172,7 +140,7 @@ function renderSessionList(listElem, sessions) {
 async function addSession(session) {
   const { error } = await supabase.from('sessions').insert([
     {
-      user_id: userId,
+      user_id: currentUser.id,
       title: session.title,
       desc: session.desc,
       type: session.type,
@@ -180,25 +148,19 @@ async function addSession(session) {
     }
   ]);
   if (error) return alert('Error adding session');
-  await updatePoints(userId, 1);
+  await updatePoints(1);
   await fetchRecentSessions();
   await fetchAllSessions();
 }
 
-// --- Modal logic ---
-function showModal(id) {
-  document.getElementById(id).classList.add('visible');
-}
-function hideModal(id) {
-  document.getElementById(id).classList.remove('visible');
-}
+// --- Modal logic and event listeners ---
 addSessionBtn.onclick = () => {
   if (addSessionBtn.classList.contains('is-disabled')) {
     showNotification("Logg inn først", "error");
     return;
   }
   showModal('add-session-modal');
-}
+};
 showAllSessionsBtn.onclick = async () => {
   if (addSessionBtn.classList.contains('is-disabled')) {
     showNotification("Logg inn først", "error");
@@ -219,7 +181,6 @@ window.onclick = function(event) {
   });
 };
 
-// --- Add session modal logic ---
 document.getElementById('save-session').onclick = async () => {
   const title = document.getElementById('session-title').value;
   const type = document.getElementById('session-type').value;
@@ -235,8 +196,7 @@ document.getElementById('save-session').onclick = async () => {
   hideModal('add-session-modal');
 };
 
-// delete session modal
-// Open the delete session modal
+// --- Delete session modal logic ---
 document.getElementById('open-delete-session-modal').onclick = () => {
   if (delSessionBtn.classList.contains('is-disabled')) {
     showNotification("Logg inn først", "error");
@@ -244,45 +204,40 @@ document.getElementById('open-delete-session-modal').onclick = () => {
   }
   document.getElementById('delete-session-modal').classList.add('visible');
 };
-// Confirm delete
+
 document.getElementById('delete-session-confirm').onclick = async () => {
   const id = document.getElementById('delete-session-id').value;
   if (!id) {
     showNotification('Skriv inn en økt-ID', 'warning');
     return;
   }
-  if (!userId) {
+  if (!currentUser) {
     showNotification('Du må logge inn først', 'error');
     return;
   }
-  // Confirm with user
   if (!confirm(`Er du sikker på at du vil slette økt med ID ${id}?`)) return;
-
-  // Delete from Supabase
-  const { data, error } = await supabaseClient
+  const { data, error } = await supabase
     .from('sessions')
     .delete()
     .eq('id', id)
-    .eq('user_id', userId)
+    .eq('user_id', currentUser.id)
     .select();
-    if (error) {
-      showNotification('Kunne ikke slette økten', 'error');
+  if (error) {
+    showNotification('Kunne ikke slette økten', 'error');
     return;
-  } if (data.length === 0) {
+  }
+  if (data.length === 0) {
     showNotification('Ingen økt med denne ID-en, eller ikke din økt.', 'warning');
   } else {
-      console.log(data);
-      showNotification('Økt slettet');
-      updatePoints(userId, -1);
-      document.getElementById('delete-session-modal').classList.remove('visible');
-      await fetchRecentSessions();
-      await fetchAllSessions();
+    showNotification('Økt slettet');
+    await updatePoints(-1);
+    document.getElementById('delete-session-modal').classList.remove('visible');
+    await fetchRecentSessions();
+    await fetchAllSessions();
   }
 };
 
-
-
-// Notification logic
+// --- Notification logic (unchanged) ---
 function showNotification(message, type = "info", duration = 5000) {
   const container = document.getElementById('notification-container');
   const toast = document.createElement('div');
@@ -291,16 +246,13 @@ function showNotification(message, type = "info", duration = 5000) {
     <span>${message}</span>
     <button class="toast-close" aria-label="Lukk">&times;</button>
   `;
-  // Close on click
   toast.querySelector('.toast-close').onclick = () => container.removeChild(toast);
-  // Auto-close
   setTimeout(() => {
     if (container.contains(toast)) container.removeChild(toast);
   }, duration);
   container.appendChild(toast);
-
 }
 
 // --- Initial state ---
 setSessionButtonsState(false);
-fetchRecentSessions();
+checkAuth();
