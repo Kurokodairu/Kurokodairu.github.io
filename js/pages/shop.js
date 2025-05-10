@@ -13,7 +13,7 @@ const allSessionList = document.getElementById('all-session-list');
 const googleLoginBtn = document.getElementById('google-login-btn'); // Your Google sign-in button 
 
 // --- UI helpers ---
-function setSessionButtonsState(enabled = !enabled) {
+function setSessionButtonsState(enabled) {
   addSessionBtn.classList.toggle('is-disabled', !enabled);
   showAllSessionsBtn.classList.toggle('is-disabled', !enabled);
   delSessionBtn.classList.toggle('is-disabled', !enabled);
