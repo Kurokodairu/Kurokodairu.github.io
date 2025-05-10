@@ -1,5 +1,5 @@
 const supabaseUrl = 'https://pmsgkdkyvowdqirnlquc.supabase.co';
-const supabaseAnonKey = 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtc2drZGt5dm93ZHFpcm5scXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzE3ODYsImV4cCI6MjA2MjIwNzc4Nn0';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtc2drZGt5dm93ZHFpcm5scXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzE3ODYsImV4cCI6MjA2MjIwNzc4Nn0.mpi2eMEOwfWBuA_7VeIp41N3pdedSrp5XacJ5CMIpDo';
 const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
 // DOM elements
@@ -10,7 +10,7 @@ const delSessionBtn = document.getElementById('open-delete-session-modal');
 const pointsDisplay = document.getElementById('points');
 const sessionList = document.getElementById('session-list');
 const allSessionList = document.getElementById('all-session-list');
-const googleLoginBtn = document.getElementById('g_id_signin'); // Your Google sign-in button
+const googleLoginBtn = document.getElementById('google-login-btn'); // Your Google sign-in button
 
 // --- UI helpers ---
 function setSessionButtonsState(enabled) {
@@ -40,6 +40,7 @@ googleLoginBtn.onclick = async () => {
 };
 
 supabase.auth.onAuthStateChange((_event, session) => {
+  
   checkAuth();
 });
 
@@ -196,7 +197,7 @@ document.getElementById('save-session').onclick = async () => {
   hideModal('add-session-modal');
 };
 
-// --- Delete session modal logic ---
+// delete session modal...
 document.getElementById('open-delete-session-modal').onclick = () => {
   if (delSessionBtn.classList.contains('is-disabled')) {
     showNotification("Logg inn først", "error");
@@ -204,7 +205,6 @@ document.getElementById('open-delete-session-modal').onclick = () => {
   }
   document.getElementById('delete-session-modal').classList.add('visible');
 };
-
 document.getElementById('delete-session-confirm').onclick = async () => {
   const id = document.getElementById('delete-session-id').value;
   if (!id) {
@@ -237,7 +237,7 @@ document.getElementById('delete-session-confirm').onclick = async () => {
   }
 };
 
-// --- Notification logic (unchanged) ---
+// Notification logic
 function showNotification(message, type = "info", duration = 5000) {
   const container = document.getElementById('notification-container');
   const toast = document.createElement('div');
