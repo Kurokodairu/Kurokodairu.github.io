@@ -4,15 +4,20 @@
   "scripts": {
     "serve": "node server.js",
     "dev": "nodemon server.js",
-    "deploy": "gh-pages -d docs --dotfiles"
+    "dev:vite": "vite dev --config frontend/vite.config.js --root frontend",
+    "build:vite": "vite build --config frontend/vite.config.js --root frontend",
+    "deploy": "npm run build:vite && gh-pages -d docs --dotfiles"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
+    "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.20",
     "browser-sync": "^3.0.3",
     "connect-browser-sync": "^2.1.0",
     "express": "^4.21.2",
     "gh-pages": "^6.0.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "vite": "^6.3.5",
+    "vue": "^3.5.14"
   }
 }
