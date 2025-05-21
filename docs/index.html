@@ -1,30 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurokodairu - Portfolio</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-    <link rel="manifest" href="/icon/site.webmanifest">
-    <link href="/css/main.css" rel="stylesheet">
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Shop</title>
+  <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.24.0/dist/umd/supabase.js"></script>
+  <link rel="stylesheet" href="../css/shop.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.260.0/font/lucide.css">
 </head>
-<body class="">
+<body>
+  <header>
+    <div class="header-content">
+      <div class="points-section">
+        <i class="lucide lucide-cat"></i>
+        <span class="points-value" id="points">0</span>
+        <span id="points" class="points-label">poeng</span>
+      </div>
+      <div class="user-section">
+            <div class="user-section">
+             <button id="google-login-btn" class="user-btn">
+             <i class="lucide lucide-google"></i>
+             Logg inn med Google
+              </button>
+           </div>
 
-    <div id="app">
-        
+        <!--<div class="points-adjust">
+          <button class="icon-btn">+<i class="lucide lucide-plus"></i></button>
+          <button class="icon-btn">-<i class="lucide lucide-minus"></i></button>-->
+        </div>
+      </div>
     </div>
+  </header>
 
-    <noscript>
-        <p class="text-red-500">Please enable JavaScript to view this website.</p>
-    </noscript>
+  <main>
+    <section id="products">
+      <h2>Løs inn poeng:</h2>
+      <div class="products-row">
+        <article class="product-item">
+          <div class="product-dot"></div>
+          <h3>Treningsuke</h3>
+          <p>En uke gratis medlemskap på treningssenteret.</p>
+          <div class="product-bottom">
+            <span class="product-price">75 poeng</span>
+            <button class="redeem-btn">
+              <i class="lucide lucide-shopping-cart"></i>
+              Løs inn
+            </button>
+          </div>
+        </article>
+        <article class="product-item">
+          <div class="product-dot"></div>
+          <h3>Personlig trener</h3>
+          <p>En time med personlig trener for å optimalisere treningsrutinen din.</p>
+          <div class="product-bottom">
+            <span class="product-price">150 poeng</span>
+            <button class="redeem-btn">
+              <i class="lucide lucide-shopping-cart"></i>
+              Løs inn
+            </button>
+          </div>
+        </article>
+        <article class="product-item">
+          <div class="product-dot"></div>
+          <h3>Treningsdrakt</h3>
+          <p>Komplett treningsdrakt i høy kvalitet med senterets logo.</p>
+          <div class="product-bottom">
+            <span class="product-price">200 poeng</span>
+            <button class="redeem-btn">
+              <i class="lucide lucide-shopping-cart"></i>
+              Løs inn
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
 
-    <script type="module" src="/js/index.js"></script>
-    <script type="module" src="/js/fireworks.js"></script>
+    <section id="sessions">
+      <div class="sessions-header">
+        <div class="sessions-title">
+          <i class="lucide lucide-calendar-clock"></i>
+          <h2>Ukas økter</h2>
+        </div>
+        <div class="sessions-actions">
+          <button class="sessions-tab active" id="show-all-sessions">Mine økter</button>
+          <button id="add-session-btn" class="add-session-btn">Legg til økt</button>
+        </div>
+      </div>
+      <ul id="session-list" class="session-list">
+      </ul>
 
+      <div class="session-delete-row">
+        <button id="open-delete-session-modal" class="delete-session-trigger">
+          Slett økt
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Modal for all sessions -->
+  <div id="session-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Mine økter</h2>
+        <span class="close" data-modal="session-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <!-- <input type="text" placeholder="Søk i økter.." class="modal-search" /> -->
+        <ul id="all-session-list" class="session-list">
+          <!-- Sessions go here -->
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="close" data-modal="session-modal">Lukk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for adding a session -->
+  <div id="add-session-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Legg til økt</h2>
+        <span class="close" data-modal="add-session-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <label>Type økt</label>
+        <select id="session-type" class="modal-input">
+          <option>Velg øktype</option>
+          <option value="Pilates">Pilates</option>
+          <option value="Styrke">Styrke</option>
+          <option value="Annet">Annet</option>
+          <option value="Vann">Vann</option>
+        </select>
+        <label>Tittel</label>
+        <input id="session-title" class="modal-input" placeholder="Tittel" />
+        <label>Beskrivelse</label>
+        <textarea id="session-desc" class="modal-input" placeholder="Beskriv din økt her..."></textarea>
+        <label>Varighet</label>
+        <input id="session-varighet" class="modal-input" placeholder="f.eks. '45'  for 45 minutter" />
+      </div>
+      <div class="modal-footer">
+        <button class="close" data-modal="add-session-modal">Avbryt</button>
+        <button id="save-session" class="modal-save">Lagre økt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for deleting a session by ID -->
+<div id="delete-session-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Slett økt</h2>
+      <span class="close" data-modal="delete-session-modal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <label for="delete-session-id">Session ID</label>
+      <input id="delete-session-id" class="modal-input" type="number" min="1" placeholder="F.eks. 123" />
+    </div>
+    <div class="modal-footer">
+      <button class="close" data-modal="delete-session-modal">Avbryt</button>
+      <button id="delete-session-confirm" class="modal-save">Slett</button>
+    </div>
+  </div>
+</div>
+
+
+  <script src="../js/pages/shop.js"></script>
+  
+  <div id="notification-container"></div>
 </body>
 </html>
-
-

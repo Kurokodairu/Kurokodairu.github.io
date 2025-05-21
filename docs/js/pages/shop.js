@@ -59,28 +59,19 @@ function setSessionButtonsState(enabled) {
 }
 
 // --- User login ---
-async function handleUserLogin() {
-  const val = userIdInput.value.trim();
-  userId = val;
-  setSessionButtonsState(!!val);
-  if (userId) {
-    switch (userId) {
-      case 'j':
-        showNotification('Jørgen', 'success');
-        break;
-      case 't':
-        showNotification('Trine', 'success');
-        break;
+document.getElementById('google-login-btn').addEventListener('click', async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin // or a specific redirect URL if needed
     }
+  });
+  if (error) {
+    showNotification('Login error: ' + error.message, 'error');
   }
-  await updatePointDisplay(userId);
-}
-
-// --- Event listeners for login ---
-userIdInput?.addEventListener('keyup', async (event) => {
-  if (event.key === 'Enter') await handleUserLogin();
+  // The user will be redirected to Google and then back to your site
 });
-document.getElementById('idButton')?.addEventListener('click', handleUserLogin);
+
 
 // --- Points ---
 async function updatePointDisplay(userId) {
