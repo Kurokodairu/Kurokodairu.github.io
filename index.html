@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Shop</title>
-  <link rel="icon" href="./icon/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.24.0/dist/umd/supabase.js"></script>
-  <link rel="stylesheet" href="./css/shop.css">
+  <link rel="stylesheet" href="../css/shop.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.260.0/font/lucide.css">
 </head>
 <body>
@@ -18,9 +18,12 @@
         <span id="points" class="points-label">poeng</span>
       </div>
       <div class="user-section">
-        <span id="user-display">Bruker</span>
-
-        <button id="google-login-btn" class="user-btn">Logg inn</button>
+            <div class="user-section">
+             <button id="google-login-btn" class="user-btn">
+             <i class="lucide lucide-google"></i>
+             Logg inn med Google
+              </button>
+           </div>
 
         <!--<div class="points-adjust">
           <button class="icon-btn">+<i class="lucide lucide-plus"></i></button>
@@ -90,6 +93,9 @@
       <div class="session-delete-row">
         <button id="open-delete-session-modal" class="delete-session-trigger">
           Slett økt
+        </button>
+        <button id="logout-btn" class="delete-session-trigger">
+          Logg ut
         </button>
       </div>
 
@@ -164,8 +170,10 @@
 </div>
 
 
+  <script src="./js/auth.js"></script>
+  <script src="./js/modal.js"></script>
   <script src="./js/pages/shop.js"></script>
-  
+
   <div id="notification-container"></div>
 </body>
 </html>

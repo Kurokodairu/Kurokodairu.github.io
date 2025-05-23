@@ -1,6 +1,6 @@
 const html = String.raw;
-import { createFooter } from './components/footer.js';
-import { initFireworks } from './fireworks.js';
+import { createFooter } from '../components/footer.js';
+import { initFireworks } from '../fireworks.js';
 class App {
     constructor() {
         this.container = document.getElementById('app');
