@@ -14,8 +14,7 @@ useHead({
   ]
 })
 
-// Initialize data on page load
-const { user } = useAuth()
+// Fetch sessions on page load
 const { fetchRecentSessions } = useSessions()
 
 onMounted(() => {

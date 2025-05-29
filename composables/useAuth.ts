@@ -3,6 +3,9 @@ export const useAuth = () => {
   const user = useSupabaseUser()
   const points = useState<number>('user.points', () => 0)
   const isLoggedIn = computed(() => !!user.value)
+  
+  // Track if we've loaded points for current user to prevent duplicate fetches
+  const loadedUserId = useState<string | null>('user.loadedUserId', () => null)
 
   // Get user points from database
   const updatePointDisplay = async (userId?: string) => {
@@ -50,6 +53,7 @@ export const useAuth = () => {
         .eq('id', user.value.id)
 
       if (!error) {
+        // Update local state immediately - no need to fetch from database
         points.value = newScore
         useNotification().show(
           change > 0 ? `+${change} poeng` : `${change} poeng`,
@@ -105,9 +109,15 @@ export const useAuth = () => {
   // Watch for auth state changes
   watchEffect(() => {
     if (user.value?.id) {
-      updatePointDisplay(user.value.id)
+      // Only fetch points if we haven't loaded them for this user yet
+      if (loadedUserId.value !== user.value.id) {
+        loadedUserId.value = user.value.id
+        updatePointDisplay(user.value.id)
+      }
     } else {
+      // User logged out - clear everything
       points.value = 0
+      loadedUserId.value = null
     }
   })
 

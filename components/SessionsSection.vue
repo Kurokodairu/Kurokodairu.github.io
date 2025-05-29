@@ -85,8 +85,5 @@ const openDeleteSessionModal = () => {
   showDeleteSessionModal.value = true
 }
 
-// Fetch recent sessions on mount
-onMounted(() => {
-  fetchRecentSessions()
-})
+// Sessions are automatically loaded by the useSessions composable
 </script>

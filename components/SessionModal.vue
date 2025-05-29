@@ -44,7 +44,7 @@ const closeOnBackdrop = (event: Event) => {
   }
 }
 
-// Fetch sessions when modal opens
+// Fetch user sessions when modal opens
 watch(showMySessionsModal, (isOpen) => {
   if (isOpen && isLoggedIn.value) {
     fetchMySessions()

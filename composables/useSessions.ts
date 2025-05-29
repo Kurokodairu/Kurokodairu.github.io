@@ -23,14 +23,17 @@ export const useSessions = () => {
   const { user } = useAuth()
   const { updatePoints } = useAuth()
   
-  const recentSessions = ref<Session[]>([])
-  const mySessions = ref<Session[]>([])
-  const isLoading = ref(false)
+  // Simple reactive state
+  const recentSessions = useState<Session[]>('sessions.recent', () => [])
+  const mySessions = useState<Session[]>('sessions.mine', () => [])
+  const isLoading = useState<boolean>('sessions.loading', () => false)
 
   // Fetch recent sessions (last week, all users)
   const fetchRecentSessions = async () => {
-    // Only run on client side
     if (import.meta.server) return
+    
+    // Prevent multiple simultaneous fetches
+    if (isLoading.value) return
     
     isLoading.value = true
     try {
@@ -45,12 +48,14 @@ export const useSessions = () => {
       
       if (error) {
         console.error('Error fetching recent sessions:', error.message)
+        // Don't clear existing data on error - just log it
         return
       }
       
       recentSessions.value = data || []
     } catch (error) {
       console.error('Error fetching recent sessions:', error)
+      // Keep existing data on network errors
     } finally {
       isLoading.value = false
     }
@@ -66,7 +71,7 @@ export const useSessions = () => {
       return
     }
 
-    isLoading.value = true
+    // Don't show loading for user sessions to avoid UI flicker
     try {
       const { data, error } = await (supabase as any)
         .from('sessions')
@@ -82,8 +87,6 @@ export const useSessions = () => {
       mySessions.value = data || []
     } catch (error) {
       console.error('Error fetching my sessions:', error)
-    } finally {
-      isLoading.value = false
     }
   }
 
@@ -110,10 +113,14 @@ export const useSessions = () => {
         return false
       }
 
-      // Add points and refresh sessions
+      // Add points and immediately refresh sessions
       await updatePoints(1)
-      await fetchRecentSessions()
-      await fetchMySessions()
+      
+      // Force immediate refresh for better UX
+      await Promise.all([
+        fetchRecentSessions(),
+        fetchMySessions()
+      ])
       
       useNotification().show('Økt lagt til!', 'success')
       return true
@@ -143,9 +150,11 @@ export const useSessions = () => {
         return false
       }
 
-      // Refresh sessions
-      await fetchRecentSessions()
-      await fetchMySessions()
+      // Immediately refresh sessions for better UX
+      await Promise.all([
+        fetchRecentSessions(),
+        fetchMySessions()
+      ])
       
       useNotification().show('Økt slettet!', 'success')
       return true
@@ -189,7 +198,7 @@ export const useSessions = () => {
       month: 'short',
       year: 'numeric'
     })
-  }
+    }
 
   const formatDuration = (varighet: number | string) => {
     if (!varighet) return ''
