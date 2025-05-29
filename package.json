@@ -1,18 +1,27 @@
 {
-  "name": "my-github-pages",
+  "name": "wellness-shop",
   "version": "1.0.0",
+  "description": "Simple wellness shop for tracking fitness sessions and redeeming rewards",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "node server.js",
-    "dev": "nodemon server.js",
-    "deploy": "gh-pages -d docs --dotfiles"
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "deploy": "nuxt generate && gh-pages -d docs",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxtjs/supabase": "^1.2.2",
+    "@pinia/nuxt": "^0.5.1",
+    "nuxt": "^3.11.2",
+    "nuxt-icon": "^0.6.10",
+    "pinia": "^2.1.7"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
-    "autoprefixer": "^10.4.20",
-    "browser-sync": "^3.0.3",
-    "connect-browser-sync": "^2.1.0",
-    "express": "^4.21.2",
     "gh-pages": "^6.0.0",
-    "nodemon": "^3.1.10"
+    "typescript": "^5.4.5"
   }
 }

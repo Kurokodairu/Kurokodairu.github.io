@@ -1,5 +1,8 @@
 node_modules/
 
+docs/
+.nuxt/
+.output/
 
 # Environment files
 .env

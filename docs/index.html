@@ -1,140 +1,24 @@
-<!DOCTYPE html>
-<html lang="no">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Shop</title>
-  <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.24.0/dist/umd/supabase.js"></script>
-  <link rel="stylesheet" href="../css/shop.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.260.0/font/lucide.css">
-</head>
-<body>
-  <header>
-    <div class="header-content">
-      <div class="points-section">
-        <i class="lucide lucide-cat"></i>
-        <span class="points-value" id="points">0</span>
-        <span id="points" class="points-label">poeng</span>
-      </div>
-      <div class="user-section">
-            <div class="user-section">
-             <button id="google-login-btn" class="user-btn">
-             <i class="lucide lucide-google"></i>
-             Logg inn med Google
-              </button>
-           </div>
-
-        <!--<div class="points-adjust">
-          <button class="icon-btn">+<i class="lucide lucide-plus"></i></button>
-          <button class="icon-btn">-<i class="lucide lucide-minus"></i></button>-->
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section id="shop">
-    </section>
-
-    <section id="sessions">
-      <div class="sessions-header">
-        <div class="sessions-title">
-          <i class="lucide lucide-calendar-clock"></i>
-          <h2>Ukas økter</h2>
-        </div>
-        <div class="sessions-actions">
-          <button class="sessions-tab active" id="show-all-sessions">Mine økter</button>
-          <button id="add-session-btn" class="add-session-btn">Legg til økt</button>
-        </div>
-      </div>
-      <ul id="session-list" class="session-list">
-      </ul>
-
-      <div class="session-delete-row">
-        <button id="open-delete-session-modal" class="delete-session-trigger">
-          Slett økt
-        </button>
-        <button id="logout-btn" class="delete-session-trigger">
-          Logg ut
-        </button>
-      </div>
-
-    </section>
-  </main>
-
-  <!-- Modal for all sessions -->
-  <div id="session-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Mine økter</h2>
-        <span class="close" data-modal="session-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <!-- <input type="text" placeholder="Søk i økter.." class="modal-search" /> -->
-        <ul id="all-session-list" class="session-list">
-          <!-- Sessions go here -->
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="close" data-modal="session-modal">Lukk</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal for adding a session -->
-  <div id="add-session-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Legg til økt</h2>
-        <span class="close" data-modal="add-session-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <label>Type økt</label>
-        <select id="session-type" class="modal-input">
-          <option>Velg øktype</option>
-          <option value="Pilates">Pilates</option>
-          <option value="Styrke">Styrke</option>
-          <option value="Annet">Annet</option>
-          <option value="Vann">Vann</option>
-        </select>
-        <label>Tittel</label>
-        <input id="session-title" class="modal-input" placeholder="Tittel" />
-        <label>Beskrivelse</label>
-        <textarea id="session-desc" class="modal-input" placeholder="Beskriv din økt her..."></textarea>
-        <label>Varighet</label>
-        <input id="session-varighet" class="modal-input" placeholder="f.eks. '45'  for 45 minutter" />
-      </div>
-      <div class="modal-footer">
-        <button class="close" data-modal="add-session-modal">Avbryt</button>
-        <button id="save-session" class="modal-save">Lagre økt</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal for deleting a session by ID -->
-<div id="delete-session-modal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Slett økt</h2>
-      <span class="close" data-modal="delete-session-modal">&times;</span>
-    </div>
-    <div class="modal-body">
-      <label for="delete-session-id">Session ID</label>
-      <input id="delete-session-id" class="modal-input" type="number" min="1" placeholder="F.eks. 123" />
-    </div>
-    <div class="modal-footer">
-      <button class="close" data-modal="delete-session-modal">Avbryt</button>
-      <button id="delete-session-confirm" class="modal-save">Slett</button>
-    </div>
-  </div>
-</div>
-
-
-  <script src="./js/auth.js"></script>
-  <script src="./js/modal.js"></script>
-  <script src="./js/pages/shop.js"></script>
-
-  <div id="notification-container"></div>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOGG</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.24.0/dist/umd/supabase.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.260.0/font/lucide.css">
+<link rel="stylesheet" href="/assets/entry.ESLe-KrK.css" crossorigin>
+<link rel="modulepreload" as="script" crossorigin href="/assets/DA-jUr2k.js">
+<link rel="prefetch" as="script" crossorigin href="/assets/0n9LsqpS.js">
+<link rel="prefetch" as="style" crossorigin href="/assets/default.CLdPO4ee.css">
+<link rel="prefetch" as="style" crossorigin href="/assets/Icon.DEqmdEP0.css">
+<link rel="prefetch" as="script" crossorigin href="/assets/BL2ExyzV.js">
+<link rel="prefetch" as="script" crossorigin href="/assets/CSyc7P-O.js">
+<link rel="prefetch" as="script" crossorigin href="/assets/DvdNerjC.js">
+<link rel="prefetch" as="script" crossorigin href="/assets/DTEa42s8.js">
+<link rel="prefetch" as="script" crossorigin href="/assets/BndQrKD8.js">
+<link rel="prefetch" as="style" crossorigin href="/assets/error-404.4oxyXxx0.css">
+<link rel="prefetch" as="script" crossorigin href="/assets/BBJhJ_Ev.js">
+<link rel="prefetch" as="style" crossorigin href="/assets/error-500.CZqNkBuR.css">
+<link rel="prefetch" as="script" crossorigin href="/assets/CDkoIRHb.js">
+<meta name="description" content="Treningslogg">
+<link rel="icon" type="image/x-icon" href="/icon/favicon.ico">
+<script type="module" src="/assets/DA-jUr2k.js" crossorigin></script>
+<script id="unhead:payload" type="application/json">{"title":"LOGG"}</script></head><body><div id="__nuxt"></div><div id="teleports"></div><script type="application/json" data-nuxt-data="nuxt-app" data-ssr="false" id="__NUXT_DATA__">[{"prerenderedAt":1,"serverRendered":2},1748549171288,false]</script>
+<script>window.__NUXT__={};window.__NUXT__.config={public:{supabaseUrl:"https://pmsgkdkyvowdqirnlquc.supabase.co",supabaseAnonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtc2drZGt5dm93ZHFpcm5scXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzE3ODYsImV4cCI6MjA2MjIwNzc4Nn0.mpi2eMEOwfWBuA_7VeIp41N3pdedSrp5XacJ5CMIpDo",supabase:{url:"https://pmsgkdkyvowdqirnlquc.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtc2drZGt5dm93ZHFpcm5scXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzE3ODYsImV4cCI6MjA2MjIwNzc4Nn0.mpi2eMEOwfWBuA_7VeIp41N3pdedSrp5XacJ5CMIpDo",redirect:true,redirectOptions:{login:"/",callback:"/",exclude:[],cookieRedirect:false,saveRedirectToCookie:false},cookieName:"sb",cookiePrefix:"sb-pmsgkdkyvowdqirnlquc-auth-token",useSsrCookies:true,cookieOptions:{maxAge:28800,sameSite:"lax",secure:true},clientOptions:{}}},app:{baseURL:"/",buildId:"04aae653-9651-4459-924d-7f8a21c70594",buildAssetsDir:"/assets/",cdnURL:""}}</script></body></html>
