@@ -42,6 +42,6 @@ npm run deploy
 
 ## Notes
 
-- Supabase configuration required for full functionality
-- Uses client-side rendering to ensure compatibility with static hosting
-- All database operations are properly handled client-side
+- supabase
+- resend api for email notif from shop
+
