@@ -1,7 +1,7 @@
 {
   "name": "wellness-shop",
   "version": "1.0.0",
-  "description": "Simple wellness shop for tracking fitness sessions and redeeming rewards",
+  "description": "",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,10 +14,8 @@
   },
   "dependencies": {
     "@nuxtjs/supabase": "^1.2.2",
-    "@pinia/nuxt": "^0.5.1",
     "nuxt": "^3.11.2",
-    "nuxt-icon": "^0.6.10",
-    "pinia": "^2.1.7"
+    "nuxt-icon": "^0.6.10"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
